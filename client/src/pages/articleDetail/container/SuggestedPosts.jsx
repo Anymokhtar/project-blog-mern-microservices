@@ -17,7 +17,7 @@ const SuggestedPosts = ({ className, header, posts = [], tags }) => {
                         <img className="aspect-square object-cover rounded-lg w-1/5"
                             src={item.image} alt="laptop" />
                         <div className="text-sm font-roboto text-dark-hard font-medium">
-                        <h3 className="text-sm font-roboto text-dark-hard font-medium md:text-base lg:text-lg">
+                            <h3 className="text-sm font-roboto text-dark-hard font-medium md:text-base lg:text-lg">
                                 {item.title}
                             </h3>
                             <span className="text-xs opacity-60">
