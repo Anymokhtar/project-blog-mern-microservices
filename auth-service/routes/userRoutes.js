@@ -10,7 +10,7 @@ import {
 import { authGuard } from "../middleware/authMiddleware";
 
 
-router.post("/registre", registerUser)
+router.post("/register", registerUser)
 router.post("/login", loginUser)
 router.get("/profile", authGuard, userProfile)
 router.put("/updateProfile", authGuard, updateProfile)

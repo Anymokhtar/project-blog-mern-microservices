@@ -5,14 +5,17 @@ import express from "express";
 import dotenv from "dotenv";
 import connectDB from "./config/db";
 import { invalidPathHandler, errorResponserHandler } from "./middleware/errorHandler";
-
+import cors from "cors";
 // Routes 
 import userRoutes from "./routes/userRoutes";
+
 
 dotenv.config();
 connectDB();
 const app = express()
+app.use(cors());
 app.use(express.json())
+
 
 app.get("/", (req, res) => {
     res.send("Server is runing...");
