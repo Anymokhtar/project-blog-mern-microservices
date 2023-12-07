@@ -4,22 +4,24 @@ import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../store/actions/user";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const navItemsInfo = [
-  { name: "Home", type: "link" },
-  { name: "Articles", type: "link" },
+  { name: "Home", type: "link", href: "/" },
+  { name: "Articles", type: "link", href: "/articles" },
   {
     name: "Pages",
     type: "dropdown",
-    items: ["About us", "Contact us"
-      // { title: "About us" },
-      // { title: "Contact us" },
+    items: [
+      { title: "About us", href: "/about" },
+      { title: "Contact us", href: "/contact" },
     ],
   },
-  { name: "Pricing", type: "link" },
-  { name: "Faq", type: "link" },
+  { name: "Pricing", type: "link", href: "/pricing" },
+  { name: "Faq", type: "link", href: "/faq" },
 ];
+
+
 const NavItem = ({ item }) => {
   const [dropdown, setDropdown] = useState(false);
 
@@ -33,9 +35,9 @@ const NavItem = ({ item }) => {
     <li className='relative group'>
       {item.type === "link" ? (
         <>
-          <a href="/" className='px-4 py-2'>
+          <Link to={item.href} className='px-4 py-2'>
             {item.name}
-          </a>
+          </Link>
           <span className="cursor-pointer text-blue-500 absolute transition-all duration-500 font-bold right-0 top-0 group-hover:right-[90%] opacity-0 group-hover:opacity-100">
             /
           </span>
@@ -49,12 +51,12 @@ const NavItem = ({ item }) => {
           <div className={`${dropdown ? "block" : "hidden"} lg:hidden transition-all duration-500 pt-4 lg:absolute lg:bottom-0 lg:right-0 lg:transform lg:translate-y-full lg:group-hover:block w-max`}>
             <ul className="bg-dark-soft lg:bg-transparent text-center flex flex-col shadow-lg rounded-lg overflow-hidden">
               {item.items.map((page, index) => (
-                <a
+                <Link
                   key={index}
-                  href="/" className="hover:bg-dark-hard hover:text-white px-4 py-2 text-white lg:text-dark-soft">
-
-                  {page}
-                </a>
+                  to={page.href}
+                  className="hover:bg-dark-hard hover:text-white px-4 py-2 text-white lg:text-dark-soft">
+                  {page.title}
+                </Link>
               ))}
             </ul>
           </div>
@@ -84,9 +86,9 @@ const Header = () => {
   return (
     <section className="sticky top-0 left-0 right-0 z-50 bg-white">
       <header className='container mx-auto px-5 flex justify-between py-4 items-center'>
-        <div>
+        <Link to="/">
           <img className="w-16" src={images.logo} alt="logo" />
-        </div>
+        </Link>
         <div className="lg:hidden z-50">
           {navIsVisible ? (
             <AiOutlineClose
@@ -112,15 +114,16 @@ const Header = () => {
                 <div className="flex flex-col items-center">
                   <button className="flex gap-x-1 items-center mt-5 lg:mt-0 border-2 border-blue-500 px-6 py-2 rounded-full text-blue-500 font-semibold hover:bg-blue-500 hover:text-white transition-all duration-300"
                     onClick={() => setProfileDrowpdown(!profileDrowpdown)}>
-                    <span>Profile</span>
+                    <span>Account</span>
                     <MdKeyboardArrowDown />
                   </button>
                   <div className={`${profileDrowpdown ? "block" : "hidden"} lg:hidden transition-all duration-500 pt-4 lg:absolute lg:bottom-0 lg:right-0 lg:transform lg:translate-y-full lg:group-hover:block w-max`}>
                     <ul className="bg-dark-soft lg:bg-transparent text-center flex flex-col shadow-lg rounded-lg overflow-hidden">
                       <button
+                        onClick={() => navigate("/profile")}
                         type="button"
                         className="hover:bg-dark-hard hover:text-white px-4 py-2 text-white lg:text-dark-soft">
-                        Dashboard
+                        Profile Page
                       </button>
                       <button
                         onClick={logoutHandler}

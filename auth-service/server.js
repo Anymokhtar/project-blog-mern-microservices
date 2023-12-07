@@ -8,6 +8,7 @@ import { invalidPathHandler, errorResponserHandler } from "./middleware/errorHan
 import cors from "cors";
 // Routes 
 import userRoutes from "./routes/userRoutes";
+import path from "path";
 
 
 dotenv.config();
@@ -22,6 +23,9 @@ app.get("/", (req, res) => {
 })
 
 app.use("/api/users", userRoutes);
+
+//permission to upload photo in frnt
+app.use('/uploads', express.static(path.join(__dirname, "/uploads")));
 
 app.use(invalidPathHandler);
 app.use(errorResponserHandler);
