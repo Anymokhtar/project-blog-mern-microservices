@@ -17,7 +17,7 @@ const ProfilePicture = ({ avatar }) => {
   const [openCrop, setOpenCrop] = useState(false);
   const [photo, setPhoto] = useState(null);
 
-  const { mutate, isLoading } = useMutation({
+  const { mutate } = useMutation({
     mutationFn: ({ token, formData }) => {
       return updateProfilePicture({
         token: token,
