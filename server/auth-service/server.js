@@ -17,7 +17,6 @@ import commentRoutes from "./routes/commentRoutes";
 import postCategoriesRoutes from "./routes/postCategoriesRoutes";
 
 let corsOptions = {
-  origin: '*' ,// Sensitive
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true, // Enable credentials (e.g., cookies, authorization headers)
   optionsSuccessStatus: 204, // Some legacy browsers (IE11, various SmartTVs) choke on 204
