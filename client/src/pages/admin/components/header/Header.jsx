@@ -21,6 +21,11 @@ const Header = () => {
   const [activeNavName, setActiveNavName] = useState("dashboard");
   const windowSize = useWindowSize();
 
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter" || event.key === " ") {
+      toggleMenuHandler();
+    }
+  };
   const { mutate: mutateCreatePost, isLoading: isLoadingCreatePost } =
     useMutation({
       mutationFn: ({ slug, token }) => {
@@ -76,6 +81,9 @@ const Header = () => {
           <div
             className="fixed inset-0 bg-black opacity-50 lg:hidden"
             onClick={toggleMenuHandler}
+            onKeyDown={handleKeyDown} // Add this line
+            role="button"
+            tabIndex={0}
           />
           {/* sidebar */}
           <div className="fixed top-0 bottom-0 left-0 z-50 w-3/4 overflow-y-auto bg-white p-4 lg:static lg:h-full lg:w-full lg:p-6">
