@@ -16,12 +16,18 @@ import postRoutes from "./routes/postRoutes";
 import commentRoutes from "./routes/commentRoutes";
 import postCategoriesRoutes from "./routes/postCategoriesRoutes";
 
+let corsOptions = {
+  origin: '*' ,// Sensitive
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true, // Enable credentials (e.g., cookies, authorization headers)
+  optionsSuccessStatus: 204, // Some legacy browsers (IE11, various SmartTVs) choke on 204
+};
 
 dotenv.config();
 connectDB();
 const app = express();
 app.use(express.json());
-app.use(cors());
+app.use(cors(corsOptions));
 
 
 app.get("/", (req, res) => {
