@@ -5,11 +5,10 @@ const createComment = async (req, res, next) => {
   try {
     const { desc, slug, parent, replyOnUser } = req.body;
 
-    const post = await Post.findOne({ slug: slug });
+    const post = await Post.findOne({ slug });
 
     if (!post) {
-      const error = new Error("Post was not found");
-      return next(error);
+      return res.status(404).json({ error: "Post not found" });
     }
 
     const newComment = new Comment({
@@ -21,7 +20,7 @@ const createComment = async (req, res, next) => {
     });
 
     const savedComment = await newComment.save();
-    return res.json(savedComment);
+    return res.status(201).json(savedComment);
   } catch (error) {
     next(error);
   }
@@ -34,14 +33,17 @@ const updateComment = async (req, res, next) => {
     const comment = await Comment.findById(req.params.commentId);
 
     if (!comment) {
-      const error = new Error("Comment was not found");
-      return next(error);
+      return res.status(404).json({ error: "Comment not found" });
     }
 
-    comment.desc = desc || comment.desc;
+    // Check if the new desc is different before updating
+    if (desc && desc !== comment.desc) {
+      comment.desc = desc;
+      const updatedComment = await comment.save();
+      return res.json(updatedComment);
+    }
 
-    const updatedComment = await comment.save();
-    return res.json(updatedComment);
+    return res.json({ message: "Comment not modified" });
   } catch (error) {
     next(error);
   }
@@ -49,16 +51,18 @@ const updateComment = async (req, res, next) => {
 
 const deleteComment = async (req, res, next) => {
   try {
-    const comment = await Comment.findByIdAndDelete(req.params.commentId);
-    await Comment.deleteMany({ parent: comment._id });
+    const commentId = req.params.commentId;
+
+    const comment = await Comment.findByIdAndDelete(commentId);
+    await Comment.deleteMany({ parent: commentId });
 
     if (!comment) {
-      const error = new Error("Comment was not found");
-      return next(error);
+      return res.status(404).json({ error: "Comment not found" });
     }
 
     return res.json({
-      message: "Comment is deleted successfully",
+      message: "Comment deleted successfully",
+      deletedCommentId: commentId,
     });
   } catch (error) {
     next(error);

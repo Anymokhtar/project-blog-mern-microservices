@@ -8,8 +8,8 @@ const createPostCategory = async (req, res, next) => {
     const postCategory = await PostCategories.findOne({ title });
 
     if (postCategory) {
-      const error = new Error("Category is already created!");
-      return next(error);
+      // Category already exists
+      return res.status(400).json({ error: "Category is already created!" });
     }
 
     const newPostCategory = new PostCategories({
@@ -18,7 +18,7 @@ const createPostCategory = async (req, res, next) => {
 
     const savedPostCategory = await newPostCategory.save();
 
-    return res.status(201).json(savedPostCategory);
+    return res.status(201).json({ category: savedPostCategory });
   } catch (error) {
     next(error);
   }
@@ -28,7 +28,7 @@ const getAllPostCategories = async (req, res, next) => {
   try {
     const postCategories = await PostCategories.find({});
 
-    return res.json(postCategories);
+    return res.json({ categories: postCategories });
   } catch (error) {
     next(error);
   }
@@ -49,11 +49,11 @@ const updatePostCategory = async (req, res, next) => {
     );
 
     if (!postCategory) {
-      const error = new Error("Category was not found");
-      return next(error);
+      // Category not found
+      return res.status(404).json({ error: "Category was not found" });
     }
 
-    return res.json(postCategory);
+    return res.json({ category: postCategory });
   } catch (error) {
     next(error);
   }
@@ -70,9 +70,7 @@ const deletePostCategory = async (req, res, next) => {
 
     await PostCategories.deleteOne({ _id: categoryId });
 
-    res.send({
-      message: "Post category is successfully deleted!",
-    });
+    res.json({ message: "Post category is successfully deleted!" });
   } catch (error) {
     next(error);
   }
